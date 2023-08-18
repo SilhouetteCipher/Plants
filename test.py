@@ -93,24 +93,33 @@ bar_width = 41
 spacing = 34
 max_bar_height = 155  # Maximum height of the bar
 max_data_value = 3000  # Maximum value from the data
+border_thickness = 50
 
 starting_x = 36
 
 draw = ImageDraw.Draw(img)
 font = ImageFont.load_default()
 
+
+
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
     proportion = data["value"] / max_data_value
     calculated_bar_height = proportion * max_bar_height
     y = inky_display.height - 22 - calculated_bar_height
-    draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
+    
+    # Draw white border
+    draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
+    
+    # Draw the actual bar inside the white border
+    draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.BLACK)
     
     # Display topic labels
     label_width, label_height = draw.textsize(data["topic"], font)
     label_x = x + (bar_width - label_width) / 2
     label_y = inky_display.height - 22 + 5
     draw.text((label_x, label_y), data["topic"], font=font, fill=inky_display.BLACK)
+
 
 
 
