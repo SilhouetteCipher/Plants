@@ -3,11 +3,44 @@
 import argparse
 from PIL import Image
 from inky.auto import auto
+import paho.mqtt.client as mqtt
+from PIL import Image, ImageDraw, ImageFont
 
-print("""Inky wHAT: Dither image
 
-Converts and displays dithered images on Inky wHAT.
-""")
+
+
+# Define MQTT parameters
+MQTT_BROKER = "10.224.1.7"
+MQTT_PORT = 1883
+MQTT_KEEPALIVE_INTERVAL = 45
+MQTT_TOPICS_SUBSCRIBED = 0
+MAX_TOPICS = 5
+mqtt_data = []
+
+def on_connect(client, userdata, flags, rc):
+    print(f"Connected with result code {str(rc)}")
+    # Subscribing to a wildcard topic
+    client.subscribe("plants/moisture/#")
+
+def on_message(client, userdata, msg):
+    global MQTT_TOPICS_SUBSCRIBED
+    if MQTT_TOPICS_SUBSCRIBED < MAX_TOPICS:
+        print(f"Received message on topic {msg.topic} with payload {msg.payload}")
+        MQTT_TOPICS_SUBSCRIBED += 1
+        mqtt_data.append({"topic": msg.topic, "value": float(msg.payload)})
+
+# Setup the MQTT client
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
+
+# Start the loop
+client.loop_start()
+
+
+
+
 
 # Set up the inky wHAT display and border colour
 
@@ -53,6 +86,27 @@ pal_img = Image.new("P", (1, 1))
 pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 0, 0) + (0, 0, 0) * 252)
 
 img = img.convert("RGB").quantize(palette=pal_img)
+
+# Bar Charting
+
+bar_width = 60
+spacing = 20
+max_bar_height = 250
+starting_x = (inky_display.width - (5 * bar_width + 4 * spacing)) / 2
+
+draw = ImageDraw.Draw(img)
+font = ImageFont.load_default()
+
+for index, data in enumerate(mqtt_data):
+    x = starting_x + index * (bar_width + spacing)
+    y = inky_display.height - (data["value"] / 100) * max_bar_height
+    draw.rectangle((x, y, x + bar_width, inky_display.height - 10), fill=inky_display.BLACK)
+    label_width, label_height = draw.textsize(data["topic"], font)
+    label_x = x + (bar_width - label_width) / 2
+    label_y = inky_display.height - 5
+    draw.text((label_x, label_y), data["topic"], font=font, fill=inky_display.BLACK)
+
+
 
 # Display the final image on Inky wHAT
 
