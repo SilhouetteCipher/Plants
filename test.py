@@ -118,7 +118,7 @@ for index, data in enumerate(mqtt_data):
     short_topic = data["topic"].split("/")[-1]
     label_width, label_height = draw.textsize(short_topic, font)
     label_x = x + (bar_width - label_width) / 2
-    label_y = inky_display.height - 22 + 5
+    label_y = inky_display.height - 22 + 2
     draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK)
 
 
