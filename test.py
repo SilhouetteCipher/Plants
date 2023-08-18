@@ -12,7 +12,7 @@ Converts and displays dithered images on Inky wHAT.
 # Set up the inky wHAT display and border colour
 
 inky_display = auto(ask_user=True, verbose=True)
-inky_display.set_border(inky_display.YELLOW)
+inky_display.set_border(inky_display.WHITE)
 
 # Grab the image argument from the command line
 
