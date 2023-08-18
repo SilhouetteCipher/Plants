@@ -8,5 +8,6 @@ display = InkyWHAT("yellow")  # Replace "yellow" with "red" if you have the red 
 img = Image.open("/home/davvyk/Plants/test.jpg")
 
 # Set the image on the display and show it
+display = auto()
 display.set_image(img)
 display.show()
