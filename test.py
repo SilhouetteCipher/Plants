@@ -12,15 +12,11 @@ Converts and displays dithered images on Inky wHAT.
 # Set up the inky wHAT display and border colour
 
 inky_display = auto(ask_user=True, verbose=True)
-inky_display.set_border(inky_display.WHITE)
+inky_display.set_border(inky_display.YELLOW)
 
 # Grab the image argument from the command line
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--image', '-i', type=str, required=True, help="Input image to be converted/displayed")
-args = parser.parse_args()
 
-img_file = args.image
 
 # Open our image file that was passed in from the command line
 
