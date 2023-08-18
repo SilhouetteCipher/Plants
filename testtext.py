@@ -8,6 +8,8 @@ display = InkyWHAT("yellow")  # Replace "yellow" with "red" if you have the red 
 # Load the image using the Python Imaging Library (PIL)
 img = Image.open("/home/davvyk/Plants/test.jpg")
 
+img_gray = img.convert('L')
+
 # Set the image on the display and show it
 display = auto()
 display.set_image(img)
