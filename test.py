@@ -89,13 +89,13 @@ img = img.convert("RGB").quantize(palette=pal_img)
 
 # Bar Charting
 
-bar_width = 41
-spacing = 34
+bar_width = 40.6
+spacing = 33.7
 max_bar_height = 155  # Maximum height of the bar
 max_data_value = 3000  # Maximum value from the data
 border_thickness = 10
 
-starting_x = 36
+starting_x = 35.6
 
 draw = ImageDraw.Draw(img)
 font = ImageFont.load_default()
@@ -109,7 +109,7 @@ for index, data in enumerate(mqtt_data):
     y = inky_display.height - 22 - calculated_bar_height
     
     # Draw white border
-    draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
+   #  draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
     
     # Draw the actual bar inside the white border
     draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
