@@ -89,10 +89,11 @@ img = img.convert("RGB").quantize(palette=pal_img)
 
 # Bar Charting
 
-# Setting the values as per your constraints
 bar_width = 41
 spacing = 34
-max_bar_height = 155
+max_bar_height = 155  # Maximum height of the bar
+max_data_value = 3000  # Maximum value from the data
+
 starting_x = 36
 
 draw = ImageDraw.Draw(img)
@@ -100,12 +101,16 @@ font = ImageFont.load_default()
 
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
-    y = inky_display.height - 22 - (data["value"] / 100) * max_bar_height  # Adjusting the start Y position
-    draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)  # Adjusted the base Y position
+    proportion = data["value"] / max_data_value
+    calculated_bar_height = proportion * max_bar_height
+    y = inky_display.height - 22 - calculated_bar_height
+    draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
+    
+    # Display topic labels
     label_width, label_height = draw.textsize(data["topic"], font)
     label_x = x + (bar_width - label_width) / 2
-    label_y = inky_display.height - 22 + 5  # 5 pixels below the base of the bar
-    draw.text((label_x, label_y), data["topic"], font=font, fill=inky_display.YELLOW)
+    label_y = inky_display.height - 22 + 5
+    draw.text((label_x, label_y), data["topic"], font=font, fill=inky_display.BLACK)
 
 
 
