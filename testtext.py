@@ -1,5 +1,6 @@
 from inky import InkyWHAT
 from PIL import Image
+from inky.auto import auto
 
 # Create an Inky wHAT display object
 display = InkyWHAT("yellow")  # Replace "yellow" with "red" if you have the red variant
