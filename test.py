@@ -179,7 +179,7 @@ img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
     
     # Display topic labels
     short_topic = data["topic"].split("/")[-1]
-    # Display topic labels
+    # Display topic labels1
     label_width, label_height = draw.textsize(short_topic, font)
     label_x = x + (bar_width - label_width) / 2
     label_y = inky_display.height - 22 + 5
