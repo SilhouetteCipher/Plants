@@ -163,12 +163,7 @@ label_x = x + (bar_width - rotated_label.width) / 2
 label_y = inky_display.height - 22 - (bar_width + label_height)
 
 # Paste the rotated label into the main image using the mask
-img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
-
-
-
-    
- 
+    img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
 
     
     # Draw white border
