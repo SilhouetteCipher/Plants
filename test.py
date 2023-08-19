@@ -51,7 +51,7 @@ img = Image.open("/home/davvyk/Plants/Plants.jpg")
 
 
 
-# Open our image file that was passed in from the command line
+# Open our image file that was passed in from the command 2
 
 img = Image.open("/home/davvyk/Plants/test.jpg")
 
