@@ -7,7 +7,6 @@ from inky.auto import auto
 import paho.mqtt.client as mqtt
 from PIL import Image, ImageDraw, ImageFont
 
-
 # Define MQTT parameters
 MQTT_BROKER = "10.224.1.7"
 MQTT_PORT = 1883
@@ -26,7 +25,9 @@ def on_message(client, userdata, msg):
     if MQTT_TOPICS_SUBSCRIBED < MAX_TOPICS:
         print(f"Received message on topic {msg.topic} with payload {msg.payload}")
         MQTT_TOPICS_SUBSCRIBED += 1
-        mqtt_data.append({"topic": msg.topic, "value": float(msg.payload)})
+        mqtt_data.append({"topic": msg.topic, "value": float(msg.paylsoad)})
+
+
 
 
 
@@ -73,9 +74,6 @@ client.loop_start()
 
 inky_display = auto(ask_user=True, verbose=True)
 inky_display.set_border(inky_display.WHITE)
-
-# Grab the image argument from the command line
-
 
 
 # Open our image file that was passed in from the command line
@@ -128,7 +126,7 @@ font_size = 11  # You can adjust this to your preference
 font = ImageFont.truetype(font_path, font_size)
 draw = ImageDraw.Draw(img)
 
-
+# write a function where we save each of the payload values each to a variable so i can post process them
 
 
 for index, data in enumerate(mqtt_data):
