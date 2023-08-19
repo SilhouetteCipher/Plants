@@ -181,6 +181,9 @@ label_x = 100
 label_y = 100
 short_topic = "Example"
 
+# Create a new image with a white background
+image = Image.new("RGB", (500, 500), (255, 255, 255))
+
 # Create a separate image for the label with a transparent background
 label_image = Image.new("RGBA", (30, 100), (255, 255, 255, 0))
 label_draw = ImageDraw.Draw(label_image)
@@ -196,6 +199,7 @@ image.paste(label_image, (label_x, label_y), label_image)
 
 # Save the modified image
 image.save("rotated_labels.png")
+
 
 
 
