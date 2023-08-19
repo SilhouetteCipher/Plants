@@ -108,6 +108,13 @@ y1 = h_new
 
 # Crop image
 
+img = img.crop((x0, y0, x1, y1))
+
+# Convert the image to use a white / black / yellow colour palette
+pal_img = Image.new("P", (1, 1))
+pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 255, 0) + (0, 0, 0) * 252)
+
+img = img.convert("RGB").quantize(palette=pal_img)
 
 
 # Bar Charting
@@ -181,15 +188,6 @@ for index, data in enumerate(mqtt_data):
 
 
 # Display the final image on Inky wHAT
-
-img = img.crop((x0, y0, x1, y1))
-
-# Convert the image to use a white / black / yellow colour palette
-pal_img = Image.new("P", (1, 1))
-pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 255, 0) + (0, 0, 0) * 252)
-
-img = img.convert("RGB").quantize(palette=pal_img)
-
 
 inky_display.set_image(img)
 inky_display.show()
