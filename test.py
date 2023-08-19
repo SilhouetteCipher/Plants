@@ -179,4 +179,6 @@ for index, data in enumerate(mqtt_data):
 
 inky_display.set_image(img)
 inky_display.show()
+img.save("output.png")
+
 
