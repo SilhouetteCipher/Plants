@@ -143,7 +143,7 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
 
-# Display topic labels
+    # Display topic labels
     short_topic = data["topic"].split("/")[-1]
     label_width, label_height = draw.textsize(short_topic, font)
 
@@ -160,35 +160,13 @@ for index, data in enumerate(mqtt_data):
 
     # Calculate new label positions
     label_x = x + (bar_width - rotated_label.width) / 2
-    label_y = inky_display.height - 22 - (bar_width + label_height)
+    label_y = y + (calculated_bar_height - rotated_label.height) / 2
 
-# Paste the rotated label into the main image using the mask
-    img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
+    # Convert main image to RGBA and paste the rotated label, then convert back to RGB
+    img_rgba = img.convert("RGBA")
+    img_rgba.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
+    img = img_rgba.convert("RGB")
 
-    
-    # Draw white border
-   #  draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
-    
-    # Draw the actual bar inside the white border
-    #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
-    
-    # Display topic labels
-    short_topic = data["topic"].split("/")[-1]
-    # Display topic labels1
-    label_width, label_height = draw.textsize(short_topic, font)
-    label_x = x + (bar_width - label_width) / 2
-    label_y = inky_display.height - 22 + 5
-
-    padding = 5  # Adjust this value to increase/decrease the padding
-    background_rect = (
-        label_x - padding,
-        label_y - padding,
-        label_x + label_width + padding,
-        label_y + label_height + padding
-    )
-    draw.rectangle(background_rect, fill=inky_display.WHITE)
-
-    draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK)
 
 
 
