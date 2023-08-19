@@ -143,28 +143,27 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
 
-    # Display topic labels rotated 90 degrees inside the bars
-    short_topic = data["topic"].split("/")[-1]
-    label_width, label_height = draw.textsize(short_topic, font)
+# Display topic labels
+short_topic = data["topic"].split("/")[-1]
+label_width, label_height = draw.textsize(short_topic, font)
 
-    # Create a new image for the label
-    label_img = Image.new('RGB', (label_width, label_height), color=(255, 255, 255))
-    label_draw = ImageDraw.Draw(label_img)
-    label_draw.text((0, 0), short_topic, font=font, fill=inky_display.BLACK)
+# Create a new image for the label
+label_img = Image.new("RGBA", (label_height, label_width), (255, 255, 255, 0))  # Transparent background
+label_draw = ImageDraw.Draw(label_img)
+label_draw.text((0, 0), short_topic, font=font, fill="black")
 
-    # Rotate the label image
-    rotated_label = label_img.rotate(90, expand=1)
+# Rotate the label image
+rotated_label = label_img.rotate(90, expand=1)
 
-    # Create a transparency mask2
-    mask = rotated_label.convert("L")
+# Create a mask of the rotated label
+mask = rotated_label.convert("L")
 
+# Calculate new label positions
+label_x = x + (bar_width - rotated_label.width) / 2
+label_y = inky_display.height - 22 - (bar_width + label_height)
 
-    # Calculate new label positions
-    label_x = x + (bar_width - rotated_label.width) / 2
-    label_y = inky_display.height - 22 - (bar_width + label_height) / 2
-    
-    # Paste the rotated label into the main image
-    img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
+# Paste the rotated label into the main image using the mask
+img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
 
 
 
