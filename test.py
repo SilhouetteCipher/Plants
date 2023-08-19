@@ -173,12 +173,11 @@ for index, data in enumerate(mqtt_data):
     rotated_label_img = rotated_label_img.convert("RGB").quantize(palette=pal_img)
 
     # Calculate the position to paste the rotated text label on the main image
-    label_x = x + (bar_width - label_height) // 2
+    label_x = x + int((bar_width - label_height) // 2)
     label_y = inky_display.height - 22 + 5
 
     # Paste the rotated text label onto the main image
     img.paste(rotated_label_img, (label_x, label_y), rotated_label_img)
-
 
 
 
