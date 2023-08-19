@@ -43,7 +43,21 @@ client.loop_start()
 
 inky_display = auto(ask_user=True, verbose=True)
 inky_display.set_border(inky_display.WHITE)
+<<<<<<< HEAD
 img = Image.open("/home/davvyk/Plants/Plants.jpg")
+=======
+
+# Grab the image argument from the command line
+
+
+
+# Open our image file that was passed in from the command line
+
+img = Image.open("/home/davvyk/Plants/test.jpg")
+
+# Get the width and height of the image
+
+>>>>>>> parent of 707db1e (Update test.py)
 w, h = img.size
 h_new = 300
 w_new = int((float(w) / h) * h_new)
@@ -72,9 +86,9 @@ font = ImageFont.truetype(font_path, font_size)
 
 canvas = Image.new('RGBA', img.size, (255, 255, 255, 0))
 canvas_draw = ImageDraw.Draw(canvas)
-draw = ImageDraw.Draw(img)
+# ... previous parts of your code ...
 
-# ... [all your previous code up to creating the ImageDraw object for img]
+draw = ImageDraw.Draw(img)
 
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
@@ -91,27 +105,24 @@ label = data["topic"].split("/")[-1]
 # Calculate text width and height to position it centered on the bar
 text_width, text_height = draw.textsize(label, font)
 
-# Create a new image for the text in RGBA, to later rotate it
-text_img = Image.new('RGBA', (text_width, text_height), (255, 255, 255, 0))  # Transparent background
+# Create a new RGBA image for the text, with transparency
+text_img = Image.new('RGBA', (text_width, text_height), (255, 255, 255, 0))
 text_draw = ImageDraw.Draw(text_img)
-text_draw.text((0, 0), label, font=font, fill=(0, 0, 0, 255))  # Black text
+text_draw.text((0, 0), label, font=font, fill=(0, 0, 0, 255))
 
 # Rotate the text image
-rotated_text_img = text_img.rotate(90, expand=True)
+rotated_text_img = text_img.rotate(90, expand=True, resample=Image.BICUBIC, fillcolor=(255,255,255,0))
 
-# Calculate position to paste the rotated text, centered on the bar
-text_x = x + (bar_width / 2) - (text_height / 2)
-text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
+# Ensure the main image is in RGBA mode
+img = img.convert("RGBA")
 
 # Composite the rotated text onto the main image
 img.alpha_composite(rotated_text_img, (int(text_x), int(text_y)))
 
-# Convert the image to use a white / black / yellow colour palette
-pal_img = Image.new("P", (1, 1))
-pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 255, 0) + (0, 0, 0) * 252)
-
+# Convert the final image back to the required mode for the inky display
 img = img.convert("RGB").quantize(palette=pal_img)
 
 # Display the final image on Inky wHAT
 inky_display.set_image(img)
 inky_display.show()
+
