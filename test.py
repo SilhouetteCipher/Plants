@@ -29,6 +29,36 @@ def on_message(client, userdata, msg):
         MQTT_TOPICS_SUBSCRIBED += 1
         mqtt_data.append({"topic": msg.topic, "value": float(msg.payload)})
 
+
+
+def draw_rounded_rect(draw, xy, corner_radius, fill=None):
+    """Draw a rounded rectangle"""
+    x1, y1, x2, y2 = xy
+    draw.rectangle(
+        [(x1, y1 + corner_radius), (x2, y2 - corner_radius)],
+        fill=fill
+    )
+    draw.rectangle(
+        [(x1 + corner_radius, y1), (x2 - corner_radius, y2)],
+        fill=fill
+    )
+    draw.pieslice(
+        [x1, y1, x1 + 2*corner_radius, y1 + 2*corner_radius],
+        180, 270, fill=fill
+    )
+    draw.pieslice(
+        [x2 - 2*corner_radius, y1, x2, y1 + 2*corner_radius],
+        270, 360, fill=fill
+    )
+    draw.pieslice(
+        [x1, y2 - 2*corner_radius, x1 + 2*corner_radius, y2],
+        90, 180, fill=fill
+    )
+    draw.pieslice(
+        [x2 - 2*corner_radius, y2 - 2*corner_radius, x2, y2],
+        0, 90, fill=fill
+    )
+
 # Setup the MQTT client
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -109,12 +139,18 @@ for index, data in enumerate(mqtt_data):
     proportion = data["value"] / max_data_value
     calculated_bar_height = proportion * max_bar_height
     y = inky_display.height - 22 - calculated_bar_height
+
+    # Draw the actual bar with rounded corners
+    draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
+    
+    # ... rest of your code ...
+
     
     # Draw white border
    #  draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
     
     # Draw the actual bar inside the white border
-    draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
+    #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
     
     # Display topic labels
     short_topic = data["topic"].split("/")[-1]
