@@ -183,6 +183,7 @@ for index, data in enumerate(mqtt_data):
 
 
 
+
 # Display the final image on Inky wHAT
 
 inky_display.set_image(img)
