@@ -154,7 +154,7 @@ for index, data in enumerate(mqtt_data):
     #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
     
     # Display topic labels
-short_topic = data["topic"].split("/")[-1]
+    short_topic = data["topic"].split("/")[-1]
 
     # Create a separate image for the text label and draw the text on it
     label_img = Image.new("RGBA", (label_height + 2 * padding, label_width + 2 * padding), (255, 255, 255, 0))
