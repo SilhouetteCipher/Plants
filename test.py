@@ -173,9 +173,7 @@ for index, data in enumerate(mqtt_data):
 
 from PIL import Image, ImageDraw, ImageFont
 
-# Load the image and create a drawing object
-image = Image.new("RGB", (400, 300), "white")
-draw = ImageDraw.Draw(image)
+from PIL import Image, ImageDraw, ImageFont
 
 # Set the font and text parameters
 font = ImageFont.truetype("/home/davvyk/Plants/distinct.ttf", 12)
@@ -183,8 +181,8 @@ label_x = 100
 label_y = 100
 short_topic = "Example"
 
-# Create a separate image for the label
-label_image = Image.new("RGB", (30, 100), "white")
+# Create a separate image for the label with a transparent background
+label_image = Image.new("RGBA", (30, 100), (255, 255, 255, 0))
 label_draw = ImageDraw.Draw(label_image)
 
 # Rotate the label image by 90 degrees
@@ -194,10 +192,11 @@ label_image = label_image.rotate(90, expand=True)
 label_draw.text((5, 5), short_topic, font=font, fill="black")
 
 # Paste the rotated label onto the original image
-image.paste(label_image, (label_x, label_y))
+image.paste(label_image, (label_x, label_y), label_image)
 
 # Save the modified image
 image.save("rotated_labels.png")
+
 
 
 
