@@ -155,7 +155,7 @@ for index, data in enumerate(mqtt_data):
     # Rotate the label image
     rotated_label = label_img.rotate(90, expand=1)
 
-    # Create a transparency mask
+    # Create a transparency mask2
     mask = rotated_label.convert("L")
 
 
