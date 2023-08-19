@@ -178,7 +178,7 @@ image = Image.new("RGB", (400, 300), "white")
 draw = ImageDraw.Draw(image)
 
 # Set the font and text parameters
-font = ImageFont.truetype("arial.ttf", 12)
+font = ImageFont.truetype("/home/davvyk/Plants/distinct.ttf", 12)
 label_x = 100
 label_y = 100
 short_topic = "Example"
