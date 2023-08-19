@@ -171,7 +171,7 @@ for index, data in enumerate(mqtt_data):
 )
     draw.rectangle(background_rect, fill=inky_display.WHITE)
 
-    draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, direction="ttb")
+    draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, direction="ttb", spacing=5)
 
 
 # Display the final image on Inky wHAT
