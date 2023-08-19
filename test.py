@@ -169,7 +169,7 @@ for index, data in enumerate(mqtt_data):
     label_x + label_width + padding,
     label_y + label_height + padding
 )
-draw.rectangle(background_rect, fill=inky_display.WHITE)
+    draw.rectangle(background_rect, fill=inky_display.WHITE)
 
     draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, direction="ttb")
 
