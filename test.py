@@ -94,8 +94,11 @@ spacing = 33.7
 max_bar_height = 155  # Maximum height of the bar
 max_data_value = 3000  # Maximum value from the data
 border_thickness = 10
-
 starting_x = 35.6
+
+font_path = "/home/davvyk/Plants/distinct.ttf"
+font_size = 20  # You can adjust this to your preference
+font = ImageFont.truetype(font_path, font_size)
 
 draw = ImageDraw.Draw(img)
 font = ImageFont.load_default()
