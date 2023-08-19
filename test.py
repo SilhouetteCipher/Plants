@@ -8,8 +8,6 @@ import paho.mqtt.client as mqtt
 from PIL import Image, ImageDraw, ImageFont
 
 
-
-
 # Define MQTT parameters
 MQTT_BROKER = "10.224.1.7"
 MQTT_PORT = 1883
@@ -68,8 +66,6 @@ client.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
 
 # Start the loop
 client.loop_start()
-
-
 
 
 
@@ -143,15 +139,7 @@ for index, data in enumerate(mqtt_data):
 
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
-    
-    # ... rest of your code ...
-
-    
-    # Draw white border
-   #  draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
-    
-    # Draw the actual bar inside the white border
-    #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
+ 
     
     # Display topic labels
     short_topic = data["topic"].split("/")[-1]
@@ -184,7 +172,7 @@ for index, data in enumerate(mqtt_data):
 
 
 
-# Display the final image on Inky wHAT
+# Display the final image on Inky wHAT testing vs
 
 inky_display.set_image(img)
 inky_display.show()
