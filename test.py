@@ -154,22 +154,23 @@ for index, data in enumerate(mqtt_data):
     #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
     
     # Display topic labels
-    short_topic = data["topic"].split("/")[-1]
-     # Display topic labels
-    label_width, label_height = draw.textsize(short_topic, font)
-    label_x = x + (bar_width - label_width) / 2
+short_topic = data["topic"].split("/")[-1]
+
+    # Create a separate image for the text label and draw the text on it
+    label_img = Image.new("RGBA", (label_height + 2 * padding, label_width + 2 * padding), (255, 255, 255, 0))
+    label_draw = ImageDraw.Draw(label_img)
+    label_draw.text((padding, padding), short_topic, font=font, fill=inky_display.BLACK)
+
+    # Rotate the text label image by 90 degrees
+    rotated_label_img = label_img.rotate(90, expand=True)
+
+    # Calculate the position to paste the rotated text label on the main image
+    label_x = x + (bar_width - label_height) // 2
     label_y = inky_display.height - 22 + 5
 
-    padding = 5  # Adjust this value to increase/decrease the padding
-    background_rect = (
-        label_x - padding,
-        label_y - padding,
-        label_x + label_width + padding,
-        label_y + label_height + padding
-    )
-    draw.rectangle(background_rect, fill=inky_display.WHITE)
+    # Paste the rotated text label onto the main image
+    img.paste(rotated_label_img, (label_x, label_y), rotated_label_img)
 
-    draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, angle=90)
 
 
 
