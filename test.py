@@ -6,9 +6,6 @@ from inky.auto import auto
 import paho.mqtt.client as mqtt
 from PIL import Image, ImageDraw, ImageFont
 
-
-
-
 # Define MQTT parameters
 MQTT_BROKER = "10.224.1.7"
 MQTT_PORT = 1883
@@ -19,7 +16,6 @@ mqtt_data = []
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {str(rc)}")
-    # Subscribing to a wildcard topic
     client.subscribe("plants/moisture/#")
 
 def on_message(client, userdata, msg):
@@ -29,149 +25,73 @@ def on_message(client, userdata, msg):
         MQTT_TOPICS_SUBSCRIBED += 1
         mqtt_data.append({"topic": msg.topic, "value": float(msg.payload)})
 
-
-
 def draw_rounded_rect(draw, xy, corner_radius, fill=None):
     """Draw a rounded rectangle"""
     x1, y1, x2, y2 = xy
-    draw.rectangle(
-        [(x1, y1 + corner_radius), (x2, y2 - corner_radius)],
-        fill=fill
-    )
-    draw.rectangle(
-        [(x1 + corner_radius, y1), (x2 - corner_radius, y2)],
-        fill=fill
-    )
-    draw.pieslice(
-        [x1, y1, x1 + 2*corner_radius, y1 + 2*corner_radius],
-        180, 270, fill=fill
-    )
-    draw.pieslice(
-        [x2 - 2*corner_radius, y1, x2, y1 + 2*corner_radius],
-        270, 360, fill=fill
-    )
-    draw.pieslice(
-        [x1, y2 - 2*corner_radius, x1 + 2*corner_radius, y2],
-        90, 180, fill=fill
-    )
-    draw.pieslice(
-        [x2 - 2*corner_radius, y2 - 2*corner_radius, x2, y2],
-        0, 90, fill=fill
-    )
+    draw.rectangle([(x1, y1 + corner_radius), (x2, y2 - corner_radius)], fill=fill)
+    draw.rectangle([(x1 + corner_radius, y1), (x2 - corner_radius, y2)], fill=fill)
+    draw.pieslice([x1, y1, x1 + 2*corner_radius, y1 + 2*corner_radius], 180, 270, fill=fill)
+    draw.pieslice([x2 - 2*corner_radius, y1, x2, y1 + 2*corner_radius], 270, 360, fill=fill)
+    draw.pieslice([x1, y2 - 2*corner_radius, x1 + 2*corner_radius, y2], 90, 180, fill=fill)
+    draw.pieslice([x2 - 2*corner_radius, y2 - 2*corner_radius, x2, y2], 0, 90, fill=fill)
 
-# Setup the MQTT client
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
-
-# Start the loop
 client.loop_start()
-
-
-
-
-
-# Set up the inky wHAT display and border colour
 
 inky_display = auto(ask_user=True, verbose=True)
 inky_display.set_border(inky_display.WHITE)
-
-
-# Open our image file that was passed in from the command line
-
 img = Image.open("/home/davvyk/Plants/Plants.jpg")
-
-# Get the width and height of the image
-
 w, h = img.size
-
-# Calculate the new height and width of the image
-
 h_new = 300
 w_new = int((float(w) / h) * h_new)
 w_cropped = 400
-
-# Resize the image with high-quality resampling
-
 img = img.resize((w_new, h_new), resample=Image.LANCZOS)
-
-# Calculate coordinates to crop image to 400 pixels wide
-
 x0 = (w_new - w_cropped) / 2
 x1 = x0 + w_cropped
 y0 = 0
 y1 = h_new
-
-# Crop image
-
 img = img.crop((x0, y0, x1, y1))
 
-
-
-
-
-
-# Convert the image to use a white / black / yellow colour palette
 pal_img = Image.new("P", (1, 1))
 pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 255, 0) + (0, 0, 0) * 252)
-
 img = img.convert("RGB").quantize(palette=pal_img)
-
-
-# Bar Charting
 
 bar_width = 40.6
 spacing = 33.7
-max_bar_height = 155  # Maximum height of the bar
-max_data_value = 3000  # Maximum value from the data
+max_bar_height = 155
+max_data_value = 3000
 border_thickness = 10
 starting_x = 35.6
 
 font_path = "/home/davvyk/Plants/distinct.ttf"
-font_size = 11  # You can adjust this to your preference
+font_size = 11
 font = ImageFont.truetype(font_path, font_size)
-draw = ImageDraw.Draw(img)
 
-
-
+canvas = Image.new('RGBA', img.size, (255, 255, 255, 0))
+canvas_draw = ImageDraw.Draw(canvas)
 
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
     proportion = data["value"] / max_data_value
     calculated_bar_height = proportion * max_bar_height
     y = inky_display.height - 22 - calculated_bar_height
-    
-    # Draw the actual bar with rounded corners
-    draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
-    
-    # Extract the last part of the topic to use as label
+    draw_rounded_rect(canvas_draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
+
     label = data["topic"].split("/")[-1]
-    
-    # Calculate text width and height to position it centered on the bar
-    text_width, text_height = draw.textsize(label, font)
-    
-    # Create a new image for the text with transparent background
-    text_img = Image.new('RGBA', (text_width, text_height), (255, 255, 255, 0))
+    text_width, text_height = canvas_draw.textsize(label, font)
+    text_img = Image.new('P', (text_width, text_height), color=inky_display.WHITE)
     text_draw = ImageDraw.Draw(text_img)
-    text_draw.text((0, 0), label, font=font, fill=(0, 0, 0, 255))
-    
-    # Rotate the text image
+    text_draw.text((0, 0), label, font=font, fill=inky_display.BLACK)
     rotated_text_img = text_img.rotate(90, expand=True)
-    
-    # Calculate position to paste the rotated text, centered on the bar
     text_x = x + (bar_width / 2) - (text_height / 2)
     text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
-    
-    # Create an alpha mask
     mask = rotated_text_img.convert("L")
-    
-    # Paste the rotated text onto the main image using the mask
-    img.paste(rotated_text_img, (int(text_x), int(text_y)), mask)
+    canvas.paste(rotated_text_img, (int(text_x), int(text_y)), mask)
 
-
-
-# Display the final image on Inky wHAT
-
+canvas = canvas.convert("RGB").quantize(palette=pal_img)
+img.paste(canvas, (0, 0), canvas)
 inky_display.set_image(img)
 inky_display.show()
