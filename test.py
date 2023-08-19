@@ -72,6 +72,7 @@ font = ImageFont.truetype(font_path, font_size)
 
 canvas = Image.new('RGBA', img.size, (255, 255, 255, 0))
 canvas_draw = ImageDraw.Draw(canvas)
+draw = ImageDraw.Draw(img)
 
 # ... [all your previous code up to creating the ImageDraw object for img]
 
