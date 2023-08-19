@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 
 #!/usr/bin/env python3
 
@@ -182,4 +181,3 @@ for index, data in enumerate(mqtt_data):
 inky_display.set_image(img)
 inky_display.show()
 
->>>>>>> parent of 27ed130 (Update test.py)
