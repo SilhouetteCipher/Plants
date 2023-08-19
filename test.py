@@ -8,8 +8,7 @@ from inky.auto import auto
 import paho.mqtt.client as mqtt
 from PIL import Image, ImageDraw, ImageFont
 
-
-
+# create a function that takes my mqtt payload and then gives me a variable i can edit for each one for min and max values
 
 # Define MQTT parameters
 MQTT_BROKER = "10.224.1.7"
@@ -172,6 +171,33 @@ for index, data in enumerate(mqtt_data):
 
     draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, angle=90)
 
+from PIL import Image, ImageDraw, ImageFont
+
+# Load the image and create a drawing object
+image = Image.new("RGB", (400, 300), "white")
+draw = ImageDraw.Draw(image)
+
+# Set the font and text parameters
+font = ImageFont.truetype("arial.ttf", 12)
+label_x = 100
+label_y = 100
+short_topic = "Example"
+
+# Create a separate image for the label
+label_image = Image.new("RGB", (30, 100), "white")
+label_draw = ImageDraw.Draw(label_image)
+
+# Rotate the label image by 90 degrees
+label_image = label_image.rotate(90, expand=True)
+
+# Draw the text on the rotated label image
+label_draw.text((5, 5), short_topic, font=font, fill="black")
+
+# Paste the rotated label onto the original image
+image.paste(label_image, (label_x, label_y))
+
+# Save the modified image
+image.save("rotated_labels.png")
 
 
 
