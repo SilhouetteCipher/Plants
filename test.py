@@ -164,8 +164,8 @@ for index, data in enumerate(mqtt_data):
     background_rect = (
         label_x - padding,
         label_y - padding,
-        label_x + label_width + padding,
-        label_y + label_height + padding
+        label_y + label_width + padding,
+        label_x + label_height + padding
     )
     draw.rectangle(background_rect, fill=inky_display.WHITE)
 
