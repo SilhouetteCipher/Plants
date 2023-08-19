@@ -155,6 +155,10 @@ for index, data in enumerate(mqtt_data):
     # Rotate the label image
     rotated_label = label_img.rotate(90, expand=1)
 
+    # Create a transparency mask
+    mask = rotated_label.convert("L")
+
+
     # Calculate new label positions
     label_x = x + (bar_width - rotated_label.width) / 2
     label_y = inky_display.height - 22 - (bar_width + label_height) / 2
