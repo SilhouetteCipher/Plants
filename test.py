@@ -144,7 +144,7 @@ for index, data in enumerate(mqtt_data):
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
 
 # Display topic labels
-short_topic = data["topic"].split("/")[-1]
+    short_topic = data["topic"].split("/")[-1]
 label_width, label_height = draw.textsize(short_topic, font)
 
 # Create a new image for the label
