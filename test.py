@@ -107,27 +107,7 @@ y1 = h_new
 
 img = img.crop((x0, y0, x1, y1))
 
-draw = ImageDraw.Draw(img)
-# Extract the last part of the topic to use as label
-label = data["topic"].split("/")[-1]
 
-# Calculate text width and height to position it centered on the bar
-text_width, text_height = draw.textsize(label, font)
-
-# Create a new image for the text, to later rotate it
-text_img = Image.new('P', (text_width, text_height), color=inky_display.WHITE)
-text_draw = ImageDraw.Draw(text_img)
-text_draw.text((0, 0), label, font=font, fill=inky_display.BLACK)
-
-# Rotate the text image
-rotated_text_img = text_img.rotate(90, expand=True)
-
-# Calculate position to paste the rotated text, centered on the bar
-text_x = x + (bar_width / 2) - (text_height / 2)
-text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
-
-# Paste the rotated text onto the main image
-img.paste(rotated_text_img, (int(text_x), int(text_y)), rotated_text_img)
 
 
 
@@ -164,6 +144,28 @@ for index, data in enumerate(mqtt_data):
     
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
+
+draw = ImageDraw.Draw(img)
+# Extract the last part of the topic to use as label
+label = data["topic"].split("/")[-1]
+
+# Calculate text width and height to position it centered on the bar
+text_width, text_height = draw.textsize(label, font)
+
+# Create a new image for the text, to later rotate it
+text_img = Image.new('P', (text_width, text_height), color=inky_display.WHITE)
+text_draw = ImageDraw.Draw(text_img)
+text_draw.text((0, 0), label, font=font, fill=inky_display.BLACK)
+
+# Rotate the text image
+rotated_text_img = text_img.rotate(90, expand=True)
+
+# Calculate position to paste the rotated text, centered on the bar
+text_x = x + (bar_width / 2) - (text_height / 2)
+text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
+
+# Paste the rotated text onto the main image
+img.paste(rotated_text_img, (int(text_x), int(text_y)), rotated_text_img)
 
 
 # Display the final image on Inky wHAT
