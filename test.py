@@ -73,25 +73,44 @@ font = ImageFont.truetype(font_path, font_size)
 canvas = Image.new('RGBA', img.size, (255, 255, 255, 0))
 canvas_draw = ImageDraw.Draw(canvas)
 
+# ... [all your previous code up to creating the ImageDraw object for img]
+
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
     proportion = data["value"] / max_data_value
     calculated_bar_height = proportion * max_bar_height
     y = inky_display.height - 22 - calculated_bar_height
-    draw_rounded_rect(canvas_draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
+    
+    # Draw the actual bar with rounded corners
+    draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
 
-    label = data["topic"].split("/")[-1]
-    text_width, text_height = canvas_draw.textsize(label, font)
-    text_img = Image.new('P', (text_width, text_height), color=inky_display.WHITE)
-    text_draw = ImageDraw.Draw(text_img)
-    text_draw.text((0, 0), label, font=font, fill=inky_display.BLACK)
-    rotated_text_img = text_img.rotate(90, expand=True)
-    text_x = x + (bar_width / 2) - (text_height / 2)
-    text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
-    mask = rotated_text_img.convert("L")
-    canvas.paste(rotated_text_img, (int(text_x), int(text_y)), mask)
+# Extract the last part of the topic to use as label
+label = data["topic"].split("/")[-1]
 
-canvas = canvas.convert("RGB").quantize(palette=pal_img)
-img.paste(canvas, (0, 0), canvas)
+# Calculate text width and height to position it centered on the bar
+text_width, text_height = draw.textsize(label, font)
+
+# Create a new image for the text in RGBA, to later rotate it
+text_img = Image.new('RGBA', (text_width, text_height), (255, 255, 255, 0))  # Transparent background
+text_draw = ImageDraw.Draw(text_img)
+text_draw.text((0, 0), label, font=font, fill=(0, 0, 0, 255))  # Black text
+
+# Rotate the text image
+rotated_text_img = text_img.rotate(90, expand=True)
+
+# Calculate position to paste the rotated text, centered on the bar
+text_x = x + (bar_width / 2) - (text_height / 2)
+text_y = inky_display.height - 22 - (calculated_bar_height / 2) - (text_width / 2)
+
+# Composite the rotated text onto the main image
+img.alpha_composite(rotated_text_img, (int(text_x), int(text_y)))
+
+# Convert the image to use a white / black / yellow colour palette
+pal_img = Image.new("P", (1, 1))
+pal_img.putpalette((255, 255, 255, 0, 0, 0, 255, 255, 0) + (0, 0, 0) * 252)
+
+img = img.convert("RGB").quantize(palette=pal_img)
+
+# Display the final image on Inky wHAT
 inky_display.set_image(img)
 inky_display.show()
