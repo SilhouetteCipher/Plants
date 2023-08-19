@@ -156,13 +156,19 @@ for index, data in enumerate(mqtt_data):
     # Display topic labels
     short_topic = data["topic"].split("/")[-1]
 
+    # Calculate the size of the text label
+    label_width, label_height = draw.textsize(short_topic, font)
+
     # Create a separate image for the text label and draw the text on it
-    label_img = Image.new("RGBA", (label_height + 2 * padding, label_width + 2 * padding), (255, 255, 255, 0))
+    label_img = Image.new("L", (label_height + 2 * padding, label_width + 2 * padding), 255)
     label_draw = ImageDraw.Draw(label_img)
-    label_draw.text((padding, padding), short_topic, font=font, fill=inky_display.BLACK)
+    label_draw.text((padding, padding), short_topic, font=font, fill=0)
 
     # Rotate the text label image by 90 degrees
     rotated_label_img = label_img.rotate(90, expand=True)
+
+    # Convert the rotated label image to use the same palette as the main image
+    rotated_label_img = rotated_label_img.convert("RGB").quantize(palette=pal_img)
 
     # Calculate the position to paste the rotated text label on the main image
     label_x = x + (bar_width - label_height) // 2
