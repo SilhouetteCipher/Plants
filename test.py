@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 #!/usr/bin/env python3
 
 import argparse
@@ -180,4 +179,4 @@ for index, data in enumerate(mqtt_data):
 
 inky_display.set_image(img)
 inky_display.show()
->>>>>>> parent of 707db1e (Update test.py)
+
