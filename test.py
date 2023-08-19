@@ -164,7 +164,7 @@ for index, data in enumerate(mqtt_data):
     label_y = inky_display.height - 22 - (bar_width + label_height) / 2
     
     # Paste the rotated label into the main image
-    img.paste(rotated_label, (int(label_x), int(label_y)), mask=rotated_label)
+    img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
 
 
 
