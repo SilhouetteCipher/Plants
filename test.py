@@ -84,7 +84,7 @@ inky_display.set_border(inky_display.WHITE)
 
 # Open our image file that was passed in from the command line
 
-img = Image.open("/home/davvyk/Plants/test.jpg")
+img = Image.open("/home/davvyk/Plants/Plants.jpg")
 
 # Get the width and height of the image
 
