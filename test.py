@@ -159,6 +159,8 @@ for index, data in enumerate(mqtt_data):
     # Calculate the size of the text label
     label_width, label_height = draw.textsize(short_topic, font)
 
+    padding=5
+
     # Create a separate image for the text label and draw the text on it
     label_img = Image.new("L", (label_height + 2 * padding, label_width + 2 * padding), 255)
     label_draw = ImageDraw.Draw(label_img)
