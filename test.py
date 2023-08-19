@@ -143,49 +143,6 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
 
-# Display topic labels
-    short_topic = data["topic"].split("/")[-1]
-    label_width, label_height = draw.textsize(short_topic, font)
-
-    # Create a new image for the label
-    label_img = Image.new("RGBA", (label_height, label_width), (255, 255, 255, 0))  # Transparent background
-    label_draw = ImageDraw.Draw(label_img)
-    label_draw.text((0, 0), short_topic, font=font, fill="black")
-
-    # Rotate the label image
-    rotated_label = label_img.rotate(90, expand=1)
-
-    # Create a mask of the rotated label
-    mask = rotated_label.convert("L")
-
-    # Calculate new label positions
-    label_x = x + (bar_width - rotated_label.width) / 2
-    label_y = inky_display.height - 22 - (bar_width + label_height)
-
-# Paste the rotated label into the main image using the mask
-    img.paste(rotated_label, (int(label_x), int(label_y)), mask=mask)
-
-    # Display topic labels
-    short_topic = data["topic"].split("/")[-1]
-    # Display topic labels1
-    label_width, label_height = draw.textsize(short_topic, font)
-    label_x = x + (bar_width - label_width) / 2
-    label_y = inky_display.height - 22 + 5
-
-    padding = 5  # Adjust this value to increase/decrease the padding
-    background_rect = (
-        label_x - padding,
-        label_y - padding,
-        label_x + label_width + padding,
-        label_y + label_height + padding
-    )
-    #draw.rectangle(background_rect, fill=inky_display.WHITE)
-
-    draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK)
-
-
-
-
 
 # Display the final image on Inky wHAT
 
