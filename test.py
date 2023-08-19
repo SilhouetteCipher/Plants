@@ -96,8 +96,8 @@ max_data_value = 3000  # Maximum value from the data
 border_thickness = 10
 starting_x = 35.6
 
-font_path = "/home/davvyk/Plants/distinct.ttf"
-font_size = 20  # You can adjust this to your preference
+font_path = "/home/davvyk/Plants/grade.ttf"
+font_size = 8  # You can adjust this to your preference
 font = ImageFont.truetype(font_path, font_size)
 draw = ImageDraw.Draw(img)
 
