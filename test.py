@@ -156,7 +156,7 @@ for index, data in enumerate(mqtt_data):
         # Display topic labels letter by letter with controlled spacing
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width / 2 - 4 #+ 2
-    label_y = 130  # Starting from the fixed vertical point
+    label_y = 120  # Starting from the fixed vertical point
     letter_spacing = 0.5  # You can adjust this to your preference
 
     for letter in short_topic:
