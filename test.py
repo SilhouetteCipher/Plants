@@ -157,24 +157,12 @@ for index, data in enumerate(mqtt_data):
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width + 1
     label_y = 130  # Starting from the fixed vertical point
-    letter_spacing = 3
 
     for letter in short_topic:
         draw.text((label_x, label_y), letter, font=font, fill=inky_display.BLACK)
         _, letter_height = draw.textsize(letter, font)
         label_y += letter_height + letter_spacing  # Move to the next position
-        
-    padding = 5  # Adjust this value to increase/decrease the padding
-    background_rect = (
-        label_x - padding,
-        label_y - padding,
-        label_x + label_width + padding,
-        label_y + label_height + padding
-    )
-    #draw.rectangle(background_rect, fill=inky_display.WHITE)
 
-
-   
 
 
 # Display the final image on Inky wHAT
