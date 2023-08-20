@@ -139,7 +139,7 @@ for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
     proportion = data["value"] / max_data_value
     calculated_bar_height = proportion * max_bar_height
-    y = inky_display.height - 22 - calculated_bar_height
+    y = inky_display.height - 40 - calculated_bar_height
 
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
@@ -155,7 +155,7 @@ for index, data in enumerate(mqtt_data):
     
         # Display topic labels letter by letter with controlled spacing
     short_topic = data["topic"].split("/")[-1]
-    label_x = x + bar_width  #+ 2
+    label_x = x + bar_width  - 10
     label_y = 130  # Starting from the fixed vertical point
     letter_spacing = 0.5  # You can adjust this to your preference
 
