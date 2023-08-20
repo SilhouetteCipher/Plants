@@ -157,6 +157,7 @@ for index, data in enumerate(mqtt_data):
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width + 1
     label_y = 130  # Starting from the fixed vertical point
+    letter_spacing = 3  # You can adjust this to your preference
 
     for letter in short_topic:
         draw.text((label_x, label_y), letter, font=font, fill=inky_display.BLACK)
