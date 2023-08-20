@@ -154,7 +154,7 @@ for index, data in enumerate(mqtt_data):
     #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
     
     # Display topic labels
-    short_topic = data["topic"].split("/")[-1]
+    short_topic = ' '.join(data["topic"].split("/")[-1])
     # Display topic labels
     descender = font.getmetrics()[1]
     label_height, label_width = draw.textsize(short_topic, font)
