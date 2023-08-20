@@ -122,7 +122,7 @@ img = img.convert("RGB").quantize(palette=pal_img)
 
 bar_width = 40.6
 spacing = 33.7
-max_bar_height = 155  # Maximum height of the bar
+max_bar_height = 150  # Maximum height of the bar
 max_data_value = 3000  # Maximum value from the data
 border_thickness = 10
 starting_x = 35.6
