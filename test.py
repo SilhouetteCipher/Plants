@@ -69,20 +69,12 @@ client.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
 # Start the loop
 client.loop_start()
 
-
-
-
-
 # Set up the inky wHAT display and border colour
 
 inky_display = auto(ask_user=True, verbose=True)
 inky_display.set_border(inky_display.WHITE)
 
-# Grab the image argument from the command line
-
-
-
-# Open our image file that was passed in from the command line
+# Open background
 
 img = Image.open("/home/davvyk/Plants/Plants.jpg")
 
@@ -141,7 +133,7 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
     
-     # Display topic labels letter by letter with controlled spacing1
+    # Display topic labels letter by letter with controlled spacing1
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width / 2 - 6 #+ 2
     label_y = 120  # Starting from the fixed vertical point
