@@ -132,9 +132,6 @@ font_size = 14  # You can adjust this to your preference
 font = ImageFont.truetype(font_path, font_size)
 draw = ImageDraw.Draw(img)
 
-
-
-
 for index, data in enumerate(mqtt_data):
     x = starting_x + index * (bar_width + spacing)
     proportion = data["value"] / max_data_value
@@ -144,16 +141,7 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar with rounded corners
     draw_rounded_rect(draw, (x, y, x + bar_width, inky_display.height - 22), corner_radius=10, fill=inky_display.YELLOW)
     
-    # ... rest of your code ...
-
-    
-    # Draw white border
-   #  draw.rectangle((x - border_thickness, y - border_thickness, x + bar_width + border_thickness, inky_display.height - 22 + border_thickness), fill=inky_display.WHITE)
-    
-    # Draw the actual bar inside the white border
-    #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
-    
-        # Display topic labels letter by letter with controlled spacing1
+     # Display topic labels letter by letter with controlled spacing1
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width / 2 - 8 #+ 2
     label_y = 120  # Starting from the fixed vertical point
