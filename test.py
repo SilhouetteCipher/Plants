@@ -159,7 +159,7 @@ for index, data in enumerate(mqtt_data):
     descender = font.getmetrics()[1]
     label_height, label_width = draw.textsize(short_topic, font)
     label_x = x + bar_width + 1
-    label_y = 100
+    label_y = 130
 
     draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, direction="ttb")
 
