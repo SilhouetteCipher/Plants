@@ -153,7 +153,7 @@ for index, data in enumerate(mqtt_data):
     # Draw the actual bar inside the white border
     #draw.rectangle((x, y, x + bar_width, inky_display.height - 22), fill=inky_display.YELLOW)
     
-        # Display topic labels letter by letter with controlled spacing
+        # Display topic labels letter by letter with controlled spacing1
     short_topic = data["topic"].split("/")[-1]
     label_x = x + bar_width / 2 - 10 #+ 2
     label_y = 140  # Starting from the fixed vertical point
