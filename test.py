@@ -157,7 +157,7 @@ for index, data in enumerate(mqtt_data):
     short_topic = ' '.join(data["topic"].split("/")[-1])
     # Display topic labels
     label_height, label_width = draw.textsize(short_topic, font)
-    label_x = x + bar_width + 5
+    label_x = x + bar_width
     label_y = (inky_display.height - label_height) / 2
 
     padding = 5  # Adjust this value to increase/decrease the padding
