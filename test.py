@@ -158,7 +158,7 @@ for index, data in enumerate(mqtt_data):
     # Display topic labels
     label_height, label_width = draw.textsize(short_topic, font)
     label_x = x + bar_width + 1
-    label_y = inky_display.height - 100 - label_height
+    label_y = inky_display.height - 22 - label_height
 
     draw.text((label_x, label_y), short_topic, font=font, fill=inky_display.BLACK, direction="ttb")
 
