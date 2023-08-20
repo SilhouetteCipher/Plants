@@ -157,7 +157,7 @@ for index, data in enumerate(mqtt_data):
     short_topic = ' '.join(data["topic"].split("/")[-1])
     # Display topic labels
     descender = font.getmetrics()[1]
-    label_height, label_width = draw.textsize(short_topic, font)
+    label_height, label_width = draw.textsize(short_topic, font).strip()
     label_x = x + bar_width + 1
     label_y = 130
 
